@@ -15,7 +15,7 @@ Instructions:
 - Ensure you load in a function called `Root()` into your HTML
 - Use `<div id="root"></div><script>render()</script>` somewhere after that.
 - Unlike React, you don't need any build-tools or runtime.
-- Furthermore, all your states are available everywhere as they're defined at the root level, so choose your naming wisely!
+- **⚠️ Important ⚠️**: all your hooks need to be used at the root level! This also mean your states are available everywhere as they're defined at the root level, so choose your naming wisely!
 - For more details: See [source code](public/index.js) (it's simple!)
 
 Tips:
