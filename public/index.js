@@ -1,6 +1,12 @@
 const states = [];
 let stateIndex = 0;
 
+/**
+ * Global useState function. To be used at the root level only!
+ *
+ * @param {any} initialValue serializable initial value or a sync function returning an initial value
+ * @returns an array with a getter and setter
+ */
 function useState(initialValue) {
   const currentIndex = stateIndex;
 
@@ -29,6 +35,13 @@ function useState(initialValue) {
   return [() => states[currentIndex], setState];
 }
 
+/**
+ * Global useStore function that uses localStorage for persistence. To be used at the root level only!
+ *
+ * @param {string} key the name of your localStorage key
+ * @param {any} initialValue serializable initial value or a sync function returning an initial value
+ * @returns an array with a getter and setter
+ */
 function useStore(key, initialValue) {
   let getStore = () => {
     const value = window.localStorage.getItem(key);
@@ -57,6 +70,9 @@ function useStore(key, initialValue) {
   return [getStore, setStore];
 }
 
+/**
+ * Renders the 'root' div
+ */
 function reactify() {
   if (typeof renderRoot !== "function") {
     return;
