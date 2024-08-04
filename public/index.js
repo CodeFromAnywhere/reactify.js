@@ -1,6 +1,3 @@
-/**
- * Reactify.js simplfies raw HTML + JS development by adding the ability to use react-like states
- */
 const states = [];
 let stateIndex = 0;
 
@@ -54,6 +51,10 @@ function useStore(key, initialValue) {
 }
 
 function render() {
+  if (typeof Root !== "function") {
+    return;
+  }
   stateIndex = 0; // Reset index before rendering
+
   document.getElementById("root").innerHTML = Root();
 }
