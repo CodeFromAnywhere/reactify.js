@@ -1,4 +1,6 @@
-// Global state to hold all our state values
+/**
+ * Reactify.js simplfies raw HTML + JS development by adding the ability to use react-like states
+ */
 const states = [];
 let stateIndex = 0;
 
