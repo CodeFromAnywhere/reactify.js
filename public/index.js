@@ -57,7 +57,7 @@ function useStore(key, initialValue) {
   return [getStore, setStore];
 }
 
-function render() {
+function reactify() {
   if (typeof renderRoot !== "function") {
     return;
   }

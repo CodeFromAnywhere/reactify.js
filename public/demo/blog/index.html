@@ -16,7 +16,7 @@
 
     <script>
         // home.js
-        function Home() {
+        function renderHome() {
             return `
         <div class="bg-white p-6 rounded-lg shadow-md">
             <h1 class="text-3xl font-bold mb-4">Welcome to My Blog</h1>
@@ -30,7 +30,7 @@
         }
 
         // blog.js
-        function Blog(blogId) {
+        function renderBlog(blogId) {
             const blogs = getBlogs();
             const blog = blogs.find((b) => b.id === blogId);
 
@@ -56,11 +56,11 @@
 
         // State management
         const [getBlogs, setBlogs] = useStore("blogs", []);
-        const [getCurrentPage, setCurrentPage] = useState("home");
-        const [getCurrentBlogId, setCurrentBlogId] = useState(null);
+        const [getCurrentPage, setCurrentPage] = useStore("currentPage", "home");
+        const [getCurrentBlogId, setCurrentBlogId] = useStore("currentBlogId", null);
 
         // Components
-        const Menu = () => {
+        const renderMenu = () => {
             return `
                 <div class="bg-white p-4 rounded-lg shadow-md mb-4">
                     <h2 class="text-xl font-bold mb-2">Menu</h2>
@@ -83,22 +83,22 @@
             let content;
             switch (getCurrentPage()) {
                 case 'home':
-                    content = Home();
+                    content = renderHome();
                     break;
                 case 'blog':
-                    content = Blog(getCurrentBlogId());
+                    content = renderBlog(getCurrentBlogId());
                     break;
                 case 'admin':
-                    content = Admin();
+                    content = renderAdmin();
                     break;
                 default:
-                    content = Home();
+                    content = renderHome();
             }
 
             return `
                 <div class="flex">
                     <div class="w-1/4 mr-4">
-                        ${Menu()}
+                        ${renderMenu()}
                     </div>
                     <div class="w-3/4">
                         ${content}
@@ -108,7 +108,7 @@
         };
 
         // Initial render
-        render();
+        reactify();
     </script>
 </body>
 

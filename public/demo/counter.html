@@ -19,7 +19,7 @@
             setText(getText() + "...");
         }
 
-        const TextEditor = () => {
+        const renderTextEditor = () => {
 
             return `
                 <div class="mt-6">
@@ -31,10 +31,6 @@
             `;
         }
 
-    </script>
-
-    <!-- counter.js -->
-    <script>
 
         const [getCount, setCount] = useStore("count", 0)
 
@@ -46,7 +42,7 @@
             setCount(getCount() - 1);
         }
 
-        const Counter = () => {
+        const renderCounter = () => {
             return `<div class="text-xl mb-4">Localstorage Counter: ${getCount()}</div>
             <div class="space-x-4">
                 <button onclick="increaseCount()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">
@@ -57,10 +53,7 @@
                 </button>
             </div>`;
         }
-    </script>
 
-    <!-- index.js -->
-    <script>
 
 
         const renderRoot = () => {
@@ -68,14 +61,14 @@
                 <div class="text-center">
                     <h1 class="text-3xl font-bold mb-6">Reactify.js</h1>
                     
-                    ${Counter()}
-                    ${TextEditor()}
+                    ${renderCounter()}
+                    ${renderTextEditor()}
                 </div>
             `;
         }
 
         // Initial render
-        render();
+        reactify();
     </script>
 </body>
 

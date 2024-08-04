@@ -43,7 +43,7 @@
         }
 
         // Components
-        const TodoItem = (todo) => {
+        const renderTodoItem = (todo) => {
             return `
             <li class="flex items-center justify-between py-2 border-b">
                 <div class="flex items-center">
@@ -60,7 +60,7 @@
         `;
         }
 
-        const TodoList = () => {
+        const renderTodoList = () => {
             const filteredTodos = getTodos().filter(todo => {
                 if (getFilter() === 'active') return !todo.completed;
                 if (getFilter() === 'completed') return todo.completed;
@@ -74,7 +74,7 @@
             `;
         };
 
-        const FilterButtons = () => {
+        const renderFilterButtons = () => {
             return `
             <div class="flex justify-center space-x-2 mt-4">
                 <button onclick="setFilter('all')" 
@@ -112,8 +112,8 @@
                     </form>
                 </div>
                 
-                ${TodoList()}
-                ${FilterButtons()}
+                ${renderTodoList()}
+                ${renderFilterButtons()}
                 
                 <button onclick="clearCompleted()" 
                         class="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors">
@@ -124,7 +124,7 @@
         }
 
         // Initial render
-        render();
+        reactify();
     </script>
 </body>
 

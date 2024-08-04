@@ -2,6 +2,10 @@ const [getTitle, setTitle] = useState("");
 const [getContent, setContent] = useState("");
 const [getSelectedBlogId, setSelectedBlogId] = useState(null);
 
+function renderHome() {
+  //duplicatre
+}
+
 function createBlog() {
   const newBlog = {
     id: Date.now(),
@@ -45,7 +49,7 @@ function selectBlog(blogId) {
   }
 }
 
-function Admin() {
+function renderAdmin() {
   return `
         <div class="bg-white p-6 rounded-lg shadow-md">
             <h2 class="text-2xl font-bold mb-4">Admin Panel</h2>
