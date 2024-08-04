@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Blog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://reactify-js.vercel.app"></script>
+    <script src="home.js"></script>
+    <script src="blog.js"></script>
+    <script src="admin.js"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+    <div id="root" class="container mx-auto p-4"></div>
+
+    <script>
+        // State management
+        const [getBlogs, setBlogs] = useStore("blogs", []);
+        const [getCurrentPage, setCurrentPage] = useState("home");
+        const [getCurrentBlogId, setCurrentBlogId] = useState(null);
+
+        // Components
+        const Menu = () => {
+            return `
+                <div class="bg-white p-4 rounded-lg shadow-md mb-4">
+                    <h2 class="text-xl font-bold mb-2">Menu</h2>
+                    <ul>
+                        <li><a href="#" onclick="setCurrentPage('home')" class="text-blue-500 hover:underline">Home</a></li>
+                        ${getBlogs().map(blog => `
+                            <li>
+                                <a href="#" onclick="setCurrentPage('blog'); setCurrentBlogId(${blog.id})" class="text-blue-500 hover:underline">
+                                    ${blog.title}
+                                </a>
+                            </li>
+                        `).join('')}
+                        <li><a href="#" onclick="setCurrentPage('admin')" class="text-blue-500 hover:underline">Admin</a></li>
+                    </ul>
+                </div>
+            `;
+        };
+
+        const Root = () => {
+            let content;
+            switch (getCurrentPage()) {
+                case 'home':
+                    content = Home();
+                    break;
+                case 'blog':
+                    content = Blog(getCurrentBlogId());
+                    break;
+                case 'admin':
+                    content = Admin();
+                    break;
+                default:
+                    content = Home();
+            }
+
+            return `
+                <div class="flex">
+                    <div class="w-1/4 mr-4">
+                        ${Menu()}
+                    </div>
+                    <div class="w-3/4">
+                        ${content}
+                    </div>
+                </div>
+            `;
+        };
+
+        // Initial render
+        render();
+    </script>
+</body>
+
+</html>

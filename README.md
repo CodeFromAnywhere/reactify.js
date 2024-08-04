@@ -5,7 +5,9 @@ Reactify.js simplfies raw HTML + JS development by adding the ability to use rea
 Examples:
 
 - Counter [code](public/demo/counter.html) [result](https://reactify-js.vercel.app/demo/counter.html)
-- TODO List [code](public/demo/todo.html) [result](https://reactify-js.vercel.app/demo/todo.html)
+- Todo Manager [code](public/demo/todo.html) [result](https://reactify-js.vercel.app/demo/todo.html)
+- Persistent Media Viewer with IndexedDB [code](public/demo/media-viewer.html) [result](https://reactify-js.vercel.app/demo/media-viewer.html)
+- Blog website [code](public/demo/blog/index.html) [result](https://reactify-js.vercel.app/demo/blog)
 
 Instructions:
 

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Persistent Media Viewer with Carousel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://reactify-js.vercel.app"></script>
+    <style>
+        .carousel {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .carousel::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div id="root" class="bg-white p-8 rounded-lg shadow-md w-full max-w-4xl"></div>
+
+    <script>
+        // IndexedDB setup
+        let db;
+        const dbName = "MediaViewerDB";
+        const objectStoreName = "mediaFiles";
+
+        const dbPromise = indexedDB.open(dbName, 1);
+
+        dbPromise.onupgradeneeded = function (event) {
+            db = event.target.result;
+            db.createObjectStore(objectStoreName, { keyPath: "id" });
+        };
+
+        dbPromise.onsuccess = function (event) {
+            db = event.target.result;
+            loadMediaFiles();
+        };
+
+        dbPromise.onerror = function (event) {
+            console.error("IndexedDB error:", event.target.error);
+        };
+
+        // State management
+        const [getMediaFiles, setMediaFiles] = useStore("mediaFiles", []);
+        const [getCurrentIndex, setCurrentIndex] = useState(0);
+
+        // Functions
+        function saveMediaFile(file) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([objectStoreName], "readwrite");
+                const objectStore = transaction.objectStore(objectStoreName);
+                const request = objectStore.add(file);
+
+                request.onsuccess = function (event) {
+                    resolve();
+                };
+
+                request.onerror = function (event) {
+                    reject("Error saving media file: " + event.target.error);
+                };
+            });
+        }
+
+        function loadMediaFiles() {
+            const transaction = db.transaction([objectStoreName], "readonly");
+            const objectStore = transaction.objectStore(objectStoreName);
+            const request = objectStore.getAll();
+
+            request.onsuccess = function (event) {
+                const files = event.target.result;
+                setMediaFiles(files.map(file => ({
+                    ...file,
+                    url: URL.createObjectURL(file.blob)
+                })));
+            };
+
+            request.onerror = function (event) {
+                console.error("Error loading media files:", event.target.error);
+            };
+        }
+
+        function deleteMediaFile(id) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([objectStoreName], "readwrite");
+                const objectStore = transaction.objectStore(objectStoreName);
+                const request = objectStore.delete(id);
+
+                request.onsuccess = function (event) {
+                    resolve();
+                };
+
+                request.onerror = function (event) {
+                    reject("Error deleting media file: " + event.target.error);
+                };
+            });
+        }
+
+        async function handleFileSelect(event) {
+            const files = Array.from(event.target.files);
+            const mediaFiles = files.filter(file => file.type.startsWith('image/') || file.type.startsWith('video/'));
+
+            for (const file of mediaFiles) {
+                const newMedia = {
+                    id: Date.now() + Math.random(),
+                    name: file.name,
+                    type: file.type.startsWith('image/') ? 'image' : 'video',
+                    blob: file
+                };
+
+                await saveMediaFile(newMedia);
+            }
+
+            loadMediaFiles();
+        }
+
+        async function deleteMedia(id) {
+            await deleteMediaFile(id);
+            setMediaFiles(prev => {
+                const newMediaFiles = prev.filter(media => media.id !== id);
+                if (getCurrentIndex() >= newMediaFiles.length) {
+                    setCurrentIndex(Math.max(0, newMediaFiles.length - 1));
+                }
+                return newMediaFiles;
+            });
+        }
+
+        function nextMedia() {
+            setCurrentIndex(prev => (prev + 1) % getMediaFiles().length);
+        }
+
+        function prevMedia() {
+            setCurrentIndex(prev => (prev - 1 + getMediaFiles().length) % getMediaFiles().length);
+        }
+
+        // Components
+        const MediaViewer = () => {
+            const mediaFiles = getMediaFiles();
+            const currentIndex = getCurrentIndex();
+
+            if (mediaFiles.length === 0) {
+                return '<p class="text-center text-gray-500">No media files selected</p>';
+            }
+
+            const currentMedia = mediaFiles[currentIndex];
+
+            let mediaElement;
+            if (currentMedia.type === 'image') {
+                mediaElement = `<img src="${currentMedia.url}" alt="${currentMedia.name}" class="max-w-full h-auto max-h-96 mx-auto">`;
+            } else {
+                mediaElement = `
+                    <video src="${currentMedia.url}" controls class="max-w-full h-auto max-h-96 mx-auto">
+                        Your browser does not support the video tag.
+                    </video>
+                `;
+            }
+
+            return `
+                <div class="mt-4">
+                    ${mediaElement}
+                    <p class="text-center mt-2">${currentMedia.name}</p>
+                    <div class="flex justify-center mt-4 space-x-4">
+                        <button onclick="prevMedia()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">Previous</button>
+                        <button onclick="nextMedia()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">Next</button>
+                        <button onclick="deleteMedia(${currentMedia.id})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors">Delete</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        const Carousel = () => {
+            const mediaFiles = getMediaFiles();
+            const currentIndex = getCurrentIndex();
+
+            if (mediaFiles.length === 0) {
+                return '';
+            }
+
+            const thumbnails = mediaFiles.map((media, index) => {
+                const isActive = index === currentIndex;
+                const thumbnailClass = isActive
+                    ? 'border-4 border-blue-500'
+                    : 'border-2 border-gray-300 hover:border-blue-300';
+                return `
+                    <div class="flex-shrink-0 w-24 h-24 m-2 cursor-pointer ${thumbnailClass}" onclick="setCurrentIndex(${index})">
+                        ${media.type === 'image'
+                        ? `<img src="${media.url}" alt="${media.name}" class="w-full h-full object-cover">`
+                        : `<video src="${media.url}" class="w-full h-full object-cover"></video>`
+                    }
+                    </div>
+                `;
+            }).join('');
+
+            return `
+                <div class="mt-6">
+                    <h2 class="text-xl font-semibold mb-2">Media Carousel</h2>
+                    <div class="carousel flex overflow-x-auto pb-4">
+                        ${thumbnails}
+                    </div>
+                </div>
+            `;
+        }
+
+        const Root = () => {
+            return `
+                <div class="text-center">
+                    <h1 class="text-3xl font-bold mb-6">Persistent Media Viewer with Carousel</h1>
+                    
+                    <div class="mb-4">
+                        <input type="file" 
+                               onchange="handleFileSelect(event)" 
+                               accept="image/*,video/*"
+                               multiple
+                               class="hidden"
+                               id="media-input">
+                        <label for="media-input" 
+                               class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors cursor-pointer">
+                            Select Media Files
+                        </label>
+                    </div>
+                    
+                    ${MediaViewer()}
+                    ${Carousel()}
+                </div>
+            `;
+        }
+
+        // Initial render
+        render();
+    </script>
+</body>
+
+</html>
