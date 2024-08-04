@@ -19,7 +19,7 @@ function useState(initialValue) {
     } else {
       states[currentIndex] = newValue;
     }
-    render(); // Re-render after state change
+    reactify(); // Re-render after state change
   };
 
   // Move to next state for next useState call
@@ -51,7 +51,7 @@ function useStore(key, initialValue) {
     } else {
       window.localStorage.setItem(key, JSON.stringify(newValue));
     }
-    render(); // Re-render after state change
+    reactify(); // Re-render after state change
   };
   // Return current state and setState function
   return [getStore, setStore];

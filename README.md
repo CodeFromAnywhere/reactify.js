@@ -13,7 +13,7 @@ Instructions:
 
 - Works using raw HTML, CSS, and JS
 - Ensure you load in a function called `Root()` into your HTML
-- Use `<div id="root"></div><script>render()</script>` somewhere after that.
+- Use `<div id="root"></div><script>reactify()</script>` somewhere after that.
 - Unlike React, you don't need any build-tools or runtime.
 - For more details: See [source code](public/index.js) (it's simple!)
 
