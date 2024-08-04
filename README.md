@@ -4,8 +4,8 @@ Reactify.js simplfies raw HTML + JS development by adding the ability to use rea
 
 Examples:
 
-- Counter [[code]](public/demo/counter.html) [[result]](https://reactify-js.vercel.app/demo/counter.html))
-- TODO List [[code]](public/demo/todo.html) [[result]](https://reactify-js.vercel.app/demo/todo.html))
+- Counter [code](public/demo/counter.html) [result](https://reactify-js.vercel.app/demo/counter.html)
+- TODO List [code](public/demo/todo.html) [result](https://reactify-js.vercel.app/demo/todo.html)
 
 Instructions:
 
