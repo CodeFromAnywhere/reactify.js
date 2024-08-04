@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://reactify-js.vercel.app"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div id="root" class="bg-white p-8 rounded-lg shadow-md w-full max-w-md"></div>
+
+    <script>
+        // State management
+        const [getTodos, setTodos] = useStore("todos", []);
+        const [getNewTodo, setNewTodo] = useState("");
+        const [getFilter, setFilter] = useState("all");
+
+        // Functions
+        function addTodo() {
+            if (getNewTodo().trim() !== "") {
+                setTodos(prev => [...prev, { id: Date.now(), text: getNewTodo(), completed: false }]);
+                setNewTodo("");
+            }
+        }
+
+        function toggleTodo(id) {
+            setTodos(prev => prev.map(todo =>
+                todo.id === id ? { ...todo, completed: !todo.completed } : todo
+            ));
+        }
+
+        function deleteTodo(id) {
+            setTodos(prev => prev.filter(todo => todo.id !== id));
+        }
+
+        function clearCompleted() {
+            setTodos(prev => prev.filter(todo => !todo.completed));
+        }
+
+        // Components
+        const TodoItem = (todo) => {
+            return `
+            <li class="flex items-center justify-between py-2 border-b">
+                <div class="flex items-center">
+                    <input type="checkbox" ${todo.completed ? 'checked' : ''} 
+                           onchange="toggleTodo(${todo.id})" 
+                           class="mr-2 form-checkbox h-5 w-5 text-blue-600">
+                    <span class="${todo.completed ? 'line-through text-gray-500' : ''}">${todo.text}</span>
+                </div>
+                <button onclick="deleteTodo(${todo.id})" 
+                        class="text-red-500 hover:text-red-700">
+                    Delete
+                </button>
+            </li>
+        `;
+        }
+
+        const TodoList = () => {
+            const filteredTodos = getTodos().filter(todo => {
+                if (getFilter() === 'active') return !todo.completed;
+                if (getFilter() === 'completed') return todo.completed;
+                return true;
+            });
+
+            return `
+                <ul class="mt-4">
+                    ${filteredTodos.map(TodoItem).join('')}
+                </ul>
+            `;
+        };
+
+        const FilterButtons = () => {
+            return `
+            <div class="flex justify-center space-x-2 mt-4">
+                <button onclick="setFilter('all')" 
+                        class="px-2 py-1 rounded ${getFilter() === 'all' ? 'bg-blue-500 text-white' : 'bg-gray-200'}">
+                    All
+                </button>
+                <button onclick="setFilter('active')" 
+                        class="px-2 py-1 rounded ${getFilter() === 'active' ? 'bg-blue-500 text-white' : 'bg-gray-200'}">
+                    Active
+                </button>
+                <button onclick="setFilter('completed')" 
+                        class="px-2 py-1 rounded ${getFilter() === 'completed' ? 'bg-blue-500 text-white' : 'bg-gray-200'}">
+                    Completed
+                </button>
+            </div>
+        `;
+        }
+
+        const Root = () => {
+            return `
+            <div class="text-center">
+                <h1 class="text-3xl font-bold mb-6">Todo Manager</h1>
+                
+                <div class="flex mb-4">
+                    <input type="text" 
+                           value="${getNewTodo()}" 
+                           onchange="setNewTodo(this.value)" 
+                           class="flex-grow px-3 py-2 border rounded-l focus:outline-none focus:ring-2 focus:ring-blue-500"
+                           placeholder="Add a new todo">
+                    <button onclick="addTodo()" 
+                            class="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-600 transition-colors">
+                        Add
+                    </button>
+                </div>
+                
+                ${TodoList()}
+                ${FilterButtons()}
+                
+                <button onclick="clearCompleted()" 
+                        class="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors">
+                    Clear Completed
+                </button>
+            </div>
+        `;
+        }
+
+        // Initial render
+        render();
+    </script>
+</body>
+
+</html>
