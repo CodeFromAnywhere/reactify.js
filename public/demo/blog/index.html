@@ -7,8 +7,7 @@
     <title>My Blog</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://reactify-js.vercel.app"></script>
-    <script src="home.js"></script>
-    <script src="blog.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
     <script src="admin.js"></script>
 </head>
 
@@ -16,6 +15,45 @@
     <div id="root" class="container mx-auto p-4"></div>
 
     <script>
+        // home.js
+        function Home() {
+            return `
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h1 class="text-3xl font-bold mb-4">Welcome to My Blog</h1>
+            <p class="text-gray-600">
+                This is a simple blog created using Reactify and Tailwind CSS. 
+                You can read blog posts by clicking on their titles in the menu, 
+                or go to the Admin page to create new blog posts.
+            </p>
+        </div>
+    `;
+        }
+
+        // blog.js
+        function Blog(blogId) {
+            const blogs = getBlogs();
+            const blog = blogs.find((b) => b.id === blogId);
+
+            if (!blog) {
+                return `
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-4">Blog not found</h2>
+                <p class="text-gray-600">Sorry, the requested blog post could not be found.</p>
+            </div>
+        `;
+            }
+
+            return `
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold mb-4">${blog.title}</h2>
+            <p class="text-gray-600 mb-4">Published on: ${new Date(
+                blog.date
+            ).toLocaleDateString()}</p>
+            <div class="prose">${marked.parse(blog.content)}</div>
+        </div>
+    `;
+        }
+
         // State management
         const [getBlogs, setBlogs] = useStore("blogs", []);
         const [getCurrentPage, setCurrentPage] = useState("home");
@@ -41,7 +79,7 @@
             `;
         };
 
-        const Root = () => {
+        const renderRoot = () => {
             let content;
             switch (getCurrentPage()) {
                 case 'home':

@@ -1,4 +1,3 @@
-// admin.js
 const [getTitle, setTitle] = useState("");
 const [getContent, setContent] = useState("");
 const [getSelectedBlogId, setSelectedBlogId] = useState(null);
@@ -16,6 +15,7 @@ function createBlog() {
 }
 
 function updateBlog() {
+  console.log("UPDATE");
   setBlogs((prev) =>
     prev.map((blog) =>
       blog.id === getSelectedBlogId()
@@ -23,6 +23,7 @@ function updateBlog() {
         : blog,
     ),
   );
+
   setSelectedBlogId(null);
   setTitle("");
   setContent("");

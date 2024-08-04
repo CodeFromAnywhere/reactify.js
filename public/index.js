@@ -58,10 +58,10 @@ function useStore(key, initialValue) {
 }
 
 function render() {
-  if (typeof Root !== "function") {
+  if (typeof renderRoot !== "function") {
     return;
   }
   stateIndex = 0; // Reset index before rendering
 
-  document.getElementById("root").innerHTML = Root();
+  document.getElementById("root").innerHTML = renderRoot();
 }
