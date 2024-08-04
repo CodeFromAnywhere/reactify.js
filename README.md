@@ -15,4 +15,8 @@ Instructions:
 - Unlike React, you don't need any build-tools or runtime.
 - Furthermore, all your states are available everywhere as they're defined at the root level, so choose your naming wisely!
 - For more details: See [source code](public/index.js) (it's simple!)
+
+Tips:
+
 - Recommended VSCode plugin: [leet-html](https://marketplace.visualstudio.com/items?itemName=EldarGerfanov.leet-html)
+- Take an example and use Claude.ai to generate something new in the same way.
