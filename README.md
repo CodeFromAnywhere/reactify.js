@@ -12,6 +12,8 @@ Example: index.html
     <script src="https://reactify.actionschema.com"></script>
   </head>
   <body>
+    <div id="root"></div>
+
     <script>
       const [getCount, setCount] = useStore("count", 0);
       const [getText, setText] = useState("Hello");
@@ -64,6 +66,6 @@ Example: index.html
 </html>
 ```
 
-As long as you always call `render()` at the end, and you have a function `Root()` you can use it!
+As long as you always have a <div id="root"></div> and call `render()` at the end, and you have a function `Root()` you can use it!
 
 Recommended VSCode plugin: `leet-html` Name: [leet-html](https://marketplace.visualstudio.com/items?itemName=EldarGerfanov.leet-html)
