@@ -19,7 +19,7 @@ Instructions:
 
 Disclaimer:
 
-- All your hooks need to be used at the root level! This also mean your states are available everywhere as they're defined at the root level, so choose your naming wisely! Naming collisions are fairly likely this way, especially on bigger projects.
+- All your hooks need to be used at the root level! This also mean your states are available everywhere as they're defined at the root level, so choose your naming wisely! Naming collisions are fairly likely this way, especially on bigger projects. Ensure to either use `var` or be sure not to collide your naming.
 
 Tips:
 
