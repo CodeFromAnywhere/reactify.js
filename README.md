@@ -7,7 +7,7 @@ Examples:
 - Counter [code](public/demo/counter.html) [result](https://reactify-js.vercel.app/demo/counter.html)
 - Todo Manager [code](public/demo/todo.html) [result](https://reactify-js.vercel.app/demo/todo.html)
 - Persistent Media Viewer with IndexedDB [code](public/demo/media-viewer.html) [result](https://reactify-js.vercel.app/demo/media-viewer.html)
-- Blog website [code](public/demo/blog/index.html) [result](https://reactify-js.vercel.app/demo/blog)
+- Blog website (multi page) [code](public/demo/blog/index.html) [result](https://reactify-js.vercel.app/demo/blog/)
 
 Instructions:
 
