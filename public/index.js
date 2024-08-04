@@ -33,7 +33,14 @@ function useStore(key, initialValue) {
   let getStore = () => {
     const value = window.localStorage.getItem(key);
     if (value === null) {
-      return initialValue;
+      if (typeof initialValue === "function") {
+        const result = initialValue();
+        // no parse needed
+        return result;
+      } else {
+        // no parse needed
+        return initialValue;
+      }
     }
     return JSON.parse(value);
   };
