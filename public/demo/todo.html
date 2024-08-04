@@ -70,7 +70,7 @@
 
             return `
                 <ul class="mt-4">
-                    ${filteredTodos.map(TodoItem).join('')}
+                    ${filteredTodos.map(renderTodoItem).join('')}
                 </ul>
             `;
         };
