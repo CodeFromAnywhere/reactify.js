@@ -2,10 +2,6 @@ const [getTitle, setTitle] = useState("");
 const [getContent, setContent] = useState("");
 const [getSelectedBlogId, setSelectedBlogId] = useState(null);
 
-function renderHome() {
-  //duplicatre
-}
-
 function createBlog() {
   const newBlog = {
     id: Date.now(),
