@@ -27,3 +27,7 @@ Tips:
 - Take an example and use Claude.ai to generate something new in the same way.
 - Divide your project into multiple pages if you run into naming collisions
 - Use a VSCode plugin for naming collisions (haven't found one yet)
+
+# TODO
+
+- make it multi-root by adding an optional function-name to reactify
