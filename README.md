@@ -13,7 +13,8 @@ Instructions:
 
 - Works using raw HTML, CSS, and JS
 - Ensure you load in a function called `renderRoot()` into your HTML
-- Use `<div id="root"></div><script>reactify()</script>` somewhere after that.
+- Use `<div id="renderRoot"></div><script>reactify(renderRoot)</script>` somewhere after that.
+- You can add additional render-roots if it suits you by changing the render function name and using another id, e.g. `renderMenu()` and `<div id="renderMenu"></div><script>reactify(renderMenu)</script>`
 - Unlike React, you don't need any build-tools or runtime.
 - For more details: See [source code](public/index.js) (it's simple!)
 
@@ -27,7 +28,3 @@ Tips:
 - Take an example and use Claude.ai to generate something new in the same way.
 - Divide your project into multiple pages if you run into naming collisions
 - Use a VSCode plugin for naming collisions (haven't found one yet)
-
-# TODO
-
-- make it multi-root by adding an optional function-name to reactify
