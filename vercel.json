@@ -1,5 +1,0 @@
-{
-  "rewrites": [
-    { "source": "/(.*)\\.ts", "destination": "/api/typescript-handler" }
-  ]
-}
