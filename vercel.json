@@ -1,17 +1,5 @@
 {
   "rewrites": [
     { "source": "/(.*)\\.ts", "destination": "/api/typescript-handler" }
-  ],
-
-  "headers": [
-    {
-      "source": "/(.*)\\.ts$",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "plain/text"
-        }
-      ]
-    }
   ]
 }
