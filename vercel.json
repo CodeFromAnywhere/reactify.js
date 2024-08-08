@@ -1,4 +1,8 @@
 {
+  "rewrites": [
+    { "source": "/(.*)\\.ts", "destination": "/api/typescript-handler" }
+  ],
+
   "headers": [
     {
       "source": "/(.*)\\.ts$",
